@@ -4,8 +4,8 @@
   --card: #182542;
   --accent: #4f8bff;
   --accent-2: #7cf3c9;
-  --text: #e8edf5;
-  --muted: #9cadc6;
+  --text: #f0f0f0;
+  --muted: #d0d0d0;
   --border: rgba(255, 255, 255, 0.08);
   --shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
   --radius: 16px;
@@ -23,8 +23,9 @@
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at 20% 20%, rgba(79, 139, 255, 0.15), transparent 25%),
-              radial-gradient(circle at 80% 0%, rgba(124, 243, 201, 0.12), transparent 20%),
+  font-weight: 400;
+  background: radial-gradient(circle at 20% 20%, rgba(124, 190, 186, 0.15), transparent 25%),
+              radial-gradient(circle at 80% 0%, rgba(109, 183, 157, 0.12), transparent 20%),
               var(--bg);
   color: var(--text);
   line-height: 1.6;
@@ -90,7 +91,7 @@ button {
   padding: 10px 12px;
   border-radius: 999px;
   color: var(--muted);
-  font-weight: 500;
+  font-weight: 400;
   transition: color var(--transition), background var(--transition);
   min-height: 44px;
   display: inline-flex;
@@ -197,12 +198,13 @@ button {
 .hero-copy h1 {
   font-size: clamp(32px, 5vw, 48px);
   margin: 8px 0 12px;
+  color: #f5f5f5;
 }
 
 .title {
   margin: 0 0 12px;
   font-weight: 600;
-  color: #fff;
+  color: #f5f5f5;
 }
 
 .hero-copy .lead {
@@ -270,10 +272,11 @@ button {
 
 h1, h2, h3 {
   margin: 0;
+  color: #f5f5f5;
 }
 
 .lead {
-  color: var(--muted);
+  color: #d0d0d0;
   font-size: 1.05rem;
 }
 
@@ -337,7 +340,7 @@ h1, h2, h3 {
 }
 
 .muted {
-  color: var(--muted);
+  color: #d0d0d0;
 }
 
 .muted.small {
@@ -974,8 +977,8 @@ h1, h2, h3 {
 }
 
 .footer-links a {
-  color: var(--muted);
-  font-weight: 500;
+  color: #d0d0d0;
+  font-weight: 400;
 }
 
 .footer-links a:hover {
