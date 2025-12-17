@@ -7,20 +7,19 @@ const themeToggle = document.querySelector('.theme-toggle');
 const projects = [
   {
     title: 'Project 1',
-    description: 'Flagship case study. Summarize the challenge, your approach, and the measurable outcome in a concise narrative.',
+    description: 'In this project, we explored how digital hardware works by constructing basic logic gates from scratch using electronic components. The goal was to understand the physical implementation of logical operations that form the foundation of modern computing systems.Working as a team, we designed, built, and tested NOT, AND, and OR logic gates using NPN transistors, resistors, LEDs, and a solderless breadboard. Each gate was constructed manually and verified through real electrical signals rather than simulations..',
     longDescription: [
-      'This placeholder project outlines how you can describe the business problem, constraints, and the audience you served. Swap this text with your own story.',
-      'Call out your process: discovery, research, prototyping, validation, and delivery. Mention collaborators, tools, and any metrics you moved.'
+      
     ],
     takeaways: [
-      'Validated concepts quickly with lean usability tests',
-      'Defined a component library to speed delivery',
-      'Improved task success rate through iterative design'
+      'Gained hands-on understanding of how logic gates work physically',
+      'Improved teamwork and lab collaboration skills',
+      'Developed practical experience with breadboards and circuits'
     ],
     image: '../images/logic gate.jpg',
     tag: 'Featured',
     category: 'Product',
-    badges: ['Design Systems', 'UX', 'Frontend'],
+    badges: ['Logic Gates', 'Hardware', 'Electronics'],
     video: 'https://www.youtube.com/watch?v=ZP1d8sk3GFE',
     gallery: [
       { src: '../images/Video.mp4', caption: 'Demo video clip' },
@@ -95,9 +94,6 @@ const modalDescriptionLong = modal?.querySelector('#modal-description-long');
 const modalTakeaways = modal?.querySelector('#modal-takeaways');
 const modalBadges = modal?.querySelector('#modal-badges');
 const modalGallery = modal?.querySelector('#modal-gallery');
-const modalVideo = modal?.querySelector('#modal-video');
-const modalLink = modal?.querySelector('#modal-link');
-const modalLinksList = modal?.querySelector('#modal-links-list');
 const modalVideoEmbed = modal?.querySelector('#modal-video-embed');
 
 const lightbox = document.getElementById('lightbox');
@@ -229,9 +225,6 @@ const openModal = project => {
     )
     .join('');
 
-  modalLinksList.innerHTML = createLinksMarkup(project.links);
-  modalVideo.href = project.video || '#';
-  modalLink.href = project.links?.[0]?.url || '#';
   modalVideoEmbed.innerHTML = project.video
     ? `<div class="video-embed"><iframe src="${project.video.replace('watch?v=', 'embed/')}" title="${project.title} demo video" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`
     : '';
