@@ -90,20 +90,49 @@
     <div class="modal-dialog">
       <button class="modal-close" aria-label="Close dialog">&times;</button>
       <div class="modal-content">
-        <div class="modal-media" id="modal-media"></div>
-        <div class="modal-body">
-          <p class="eyebrow" id="modal-tag"></p>
-          <h2 id="modal-title"></h2>
-          <p class="muted" id="modal-description"></p>
-          <div class="pill-list" id="modal-badges"></div>
-          <div class="gallery" id="modal-gallery"></div>
-          <div class="modal-actions">
-            <a class="btn primary" id="modal-video" target="_blank" rel="noopener">Watch demo</a>
-            <a class="btn ghost" id="modal-link" target="_blank" rel="noopener">Open project</a>
+        <div class="modal-grid">
+          <div class="modal-media" id="modal-media"></div>
+          <div class="modal-body">
+            <p class="eyebrow" id="modal-tag"></p>
+            <h2 id="modal-title"></h2>
+            <p class="muted" id="modal-description"></p>
+            <div id="modal-description-long"></div>
+            <div class="modal-section">
+              <h3>Key Takeaways</h3>
+              <ul class="takeaways" id="modal-takeaways"></ul>
+            </div>
+            <div class="pill-list" id="modal-badges"></div>
+            <div class="modal-section">
+              <h3>Links</h3>
+              <ul class="links-list" id="modal-links-list"></ul>
+            </div>
+            <div class="modal-actions">
+              <a class="btn primary" id="modal-video" target="_blank" rel="noopener">Watch demo</a>
+              <a class="btn ghost" id="modal-link" target="_blank" rel="noopener">Open project</a>
+            </div>
           </div>
+        </div>
+        <div class="modal-section">
+          <h3>Project Gallery</h3>
+          <div class="gallery" id="modal-gallery"></div>
+        </div>
+        <div class="modal-section">
+          <h3>Project Demo Video</h3>
+          <div id="modal-video-embed"></div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="lightbox-backdrop"></div>
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close image viewer">&times;</button>
+    <button class="lightbox-nav" id="lightbox-prev" aria-label="Previous image">&#10094;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-image" src="" alt="">
+      <p class="lightbox-caption" id="lightbox-caption"></p>
+    </div>
+    <button class="lightbox-nav" id="lightbox-next" aria-label="Next image">&#10095;</button>
   </div>
 
   <script src="../js/main.js"></script>
