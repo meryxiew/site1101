@@ -17,8 +17,8 @@ const projects = [
       'Developed practical experience with breadboards and circuits'
     ],
     image: '../images/logic gate.jpg',
-    tag: 'Featured',
-    category: 'Product',
+    tag: 'Logic gates',
+    category: 'Logic Gates',
     badges: ['Logic Gates', 'Hardware', 'Electronics'],
     video: 'https://www.youtube.com/watch?v=ZP1d8sk3GFE',
     gallery: [
@@ -44,8 +44,8 @@ const projects = [
       'De-risked features via prototype testing'
     ],
     image: '../images/project-16x9-placeholder.svg',
-    tag: 'Web',
-    category: 'Web',
+    tag: 'Hour of Code',
+    category: 'Hour of Code',
     badges: ['Prototype', 'Usability', 'API'],
     video: 'https://www.youtube.com/watch?v=ZP1d8sk3GFE',
     gallery: [
@@ -55,29 +55,6 @@ const projects = [
     links: [
       { label: 'GitHub repo', url: '#' },
       { label: 'Live demo', url: '#' }
-    ]
-  },
-  {
-    title: 'Project 3',
-    description: 'A design system initiative to improve consistency and delivery speed.',
-    longDescription: [
-      'Document how you structured tokens, components, and governance.',
-      'Explain how adoption improved delivery quality and reduced drift.'
-    ],
-    takeaways: [
-      'Rolled out tokens and accessibility guidelines',
-      'Increased component re-use across teams'
-    ],
-    image: '../images/project-16x9-placeholder.svg',
-    tag: 'Design System',
-    category: 'Systems',
-    badges: ['Tokens', 'Components', 'Docs'],
-    video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    gallery: [
-      { src: '../images/project-16x9-placeholder.svg', caption: 'System overview' }
-    ],
-    links: [
-      { label: 'GitHub repo', url: '#' }
     ]
   }
 ];
