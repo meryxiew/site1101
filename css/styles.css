@@ -29,6 +29,8 @@ body {
   color: var(--text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  min-width: 320px;
+  overflow-x: hidden;
 }
 
 a {
@@ -38,7 +40,14 @@ a {
 
 img {
   max-width: 100%;
+  height: auto;
   display: block;
+}
+
+button {
+  font: inherit;
+  min-height: 44px;
+  min-width: 44px;
 }
 
 .container {
@@ -83,6 +92,9 @@ img {
   color: var(--muted);
   font-weight: 500;
   transition: color var(--transition), background var(--transition);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .site-nav a:hover,
@@ -211,6 +223,7 @@ img {
   justify-content: center;
   gap: 8px;
   padding: 12px 16px;
+  min-height: 44px;
   border-radius: 12px;
   font-weight: 600;
   border: 1px solid transparent;
@@ -634,6 +647,33 @@ h1, h2, h3 {
 @media (min-width: 960px) {
   .modal-content {
     grid-template-columns: 1.05fr 1fr;
+  }
+}
+
+/* Responsive breakpoints */
+@media (max-width: 767px) {
+  .hero {
+    padding: 72px 0 48px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .projects-section .project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .projects-section .project-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
