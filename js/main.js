@@ -2,6 +2,7 @@ const navToggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('.site-nav');
 const navLinks = document.querySelectorAll('.site-nav a[data-nav]');
 const footerYear = document.getElementById('footer-year');
+const themeToggle = document.querySelector('.theme-toggle');
 
 const projects = [
   {
@@ -16,14 +17,15 @@ const projects = [
       'Defined a component library to speed delivery',
       'Improved task success rate through iterative design'
     ],
-    image: '../images/project-16x9-placeholder.svg',
+    image: '../images/logic gate.jpg',
     tag: 'Featured',
     category: 'Product',
     badges: ['Design Systems', 'UX', 'Frontend'],
     video: 'https://www.youtube.com/watch?v=ZP1d8sk3GFE',
     gallery: [
-      { src: '../images/project-16x9-placeholder.svg', caption: 'Landing view mock' },
-      { src: '../images/project-16x9-placeholder.svg', caption: 'Dashboard concept' },
+      { src: '../images/Video.mp4', caption: 'Demo video clip' },
+      { src: '../images/Photo 1 for logic gate.jpg', caption: 'Photo 1' },
+      { src: '../images/Photo 2 for logic gate.jpg', caption: 'Photo 2' },
       { src: '../images/project-16x9-placeholder.svg', caption: 'Mobile responsive layout' }
     ],
     links: [
@@ -104,9 +106,12 @@ const lightboxCaption = lightbox?.querySelector('#lightbox-caption');
 const lightboxPrev = lightbox?.querySelector('#lightbox-prev');
 const lightboxNext = lightbox?.querySelector('#lightbox-next');
 const lightboxClose = lightbox?.querySelector('#lightbox-close');
+const lightboxContent = lightbox?.querySelector('.lightbox-content');
 
 let currentProject = null;
 let currentGalleryIndex = 0;
+
+const isVideo = src => /\.mp4($|\?)/i.test(src);
 
 const createBadgeMarkup = badges =>
   badges.map(badge => `<span class="badge">${badge}</span>`).join('');
@@ -168,7 +173,13 @@ const renderProjects = (filter = 'all') => {
           ${project.video ? `<a class="btn primary" href="${project.video}" target="_blank" rel="noopener">Watch Demo</a>` : ''}
         </div>
         <div class="gallery-thumbs">
-          ${project.gallery.map((item, idx) => `<img src="${item.src}" alt="${project.title} gallery image" loading="lazy" data-idx="${idx}" data-project="${projectIndex}" class="thumb-click">`).join('')}
+          ${project.gallery.map((item, idx) => isVideo(item.src)
+            ? `<div class="gallery-thumb video-thumb thumb-click" data-idx="${idx}" data-project="${projectIndex}">
+                 <div class="video-thumb-label">Video</div>
+                 <div class="video-thumb-play">▶</div>
+               </div>`
+            : `<img src="${item.src}" alt="${project.title} gallery image" loading="lazy" data-idx="${idx}" data-project="${projectIndex}" class="thumb-click">`
+          ).join('')}
         </div>
       </div>
     `;
@@ -209,7 +220,13 @@ const openModal = project => {
   modalBadges.innerHTML = createBadgeMarkup(project.badges || []);
 
   modalGallery.innerHTML = project.gallery
-    .map((item, idx) => `<img src="${item.src}" alt="${item.caption || project.title}" loading="lazy" data-idx="${idx}" class="modal-thumb">`)
+    .map((item, idx) => isVideo(item.src)
+      ? `<div class="modal-thumb video-thumb" data-idx="${idx}">
+            <div class="video-thumb-label">Video</div>
+            <div class="video-thumb-play">▶</div>
+          </div>`
+      : `<img src="${item.src}" alt="${item.caption || project.title}" loading="lazy" data-idx="${idx}" class="modal-thumb">`
+    )
     .join('');
 
   modalLinksList.innerHTML = createLinksMarkup(project.links);
@@ -239,8 +256,29 @@ const updateLightbox = () => {
   if (!lightbox || !currentProject) return;
   const item = currentProject.gallery[currentGalleryIndex];
   if (!item) return;
-  lightboxImage.src = item.src;
-  lightboxImage.alt = item.caption || currentProject.title;
+  const existingVideo = lightbox?.querySelector('video.lightbox-video');
+  if (isVideo(item.src)) {
+    if (existingVideo) {
+      existingVideo.src = item.src;
+      existingVideo.style.display = 'block';
+    } else if (lightboxContent) {
+      const video = document.createElement('video');
+      video.className = 'lightbox-video';
+      video.src = item.src;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      lightboxContent.insertBefore(video, lightboxCaption);
+    }
+    if (lightboxImage) lightboxImage.style.display = 'none';
+  } else {
+    if (existingVideo) existingVideo.remove();
+    if (lightboxImage) {
+      lightboxImage.style.display = 'block';
+      lightboxImage.src = item.src;
+      lightboxImage.alt = item.caption || currentProject.title;
+    }
+  }
   lightboxCaption.textContent = item.caption || '';
 };
 
@@ -260,6 +298,28 @@ const closeLightbox = () => {
   lightbox.setAttribute('aria-hidden', 'true');
   if (!modal?.classList.contains('open')) {
     document.body.classList.remove('no-scroll');
+  }
+};
+
+const applyTheme = theme => {
+  const isLight = theme === 'light';
+  document.body.classList.toggle('light-theme', isLight);
+  document.documentElement.classList.toggle('light-theme', isLight);
+  if (themeToggle) {
+    themeToggle.setAttribute('aria-pressed', String(isLight));
+    themeToggle.classList.toggle('is-light', isLight);
+  }
+};
+
+const initTheme = () => {
+  const saved = localStorage.getItem('theme');
+  const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+  const initial = saved || (prefersLight ? 'light' : 'dark');
+  applyTheme(initial);
+
+  if (themeToggle) {
+    themeToggle.setAttribute('aria-pressed', String(initial === 'light'));
+    themeToggle.classList.toggle('is-light', initial === 'light');
   }
 };
 
@@ -354,6 +414,8 @@ if (footerYear) {
   footerYear.textContent = new Date().getFullYear();
 }
 
+initTheme();
+
 filtersContainer?.addEventListener('click', event => {
   const target = event.target;
   if (!(target instanceof HTMLElement)) return;
@@ -398,3 +460,10 @@ lightboxPrev?.addEventListener('click', prevLightbox);
 lightboxNext?.addEventListener('click', nextLightbox);
 lightboxClose?.addEventListener('click', closeLightbox);
 lightbox?.querySelector('.lightbox-backdrop')?.addEventListener('click', closeLightbox);
+
+themeToggle?.addEventListener('click', () => {
+  const isLight = document.body.classList.contains('light-theme');
+  const next = isLight ? 'dark' : 'light';
+  applyTheme(next);
+  localStorage.setItem('theme', next);
+});
