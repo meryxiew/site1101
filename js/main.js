@@ -1,6 +1,7 @@
 const navToggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('.site-nav');
 const navLinks = document.querySelectorAll('.site-nav a[data-nav]');
+const footerYear = document.getElementById('footer-year');
 
 const projects = [
   {
@@ -232,6 +233,10 @@ document.addEventListener('keydown', event => {
 highlightActiveLink();
 renderFilters();
 renderProjects();
+
+if (footerYear) {
+  footerYear.textContent = new Date().getFullYear();
+}
 
 filtersContainer?.addEventListener('click', event => {
   const target = event.target;
