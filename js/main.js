@@ -1,5 +1,6 @@
 const navToggle = document.querySelector('.nav-toggle');
 const nav = document.querySelector('.site-nav');
+const navLinks = document.querySelectorAll('.site-nav a[data-nav]');
 
 const projects = [
   {
@@ -59,20 +60,67 @@ const renderProjects = () => {
 };
 
 const toggleNav = () => {
+  if (!nav || !navToggle) return;
   const isOpen = nav.classList.toggle('open');
   navToggle.setAttribute('aria-expanded', String(isOpen));
 };
 
+const closeNav = () => {
+  if (!nav || !navToggle) return;
+  if (nav.classList.contains('open')) {
+    nav.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+};
+
+const handleNavToggleKey = event => {
+  if (!navToggle) return;
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    toggleNav();
+  } else if (event.key === 'Escape') {
+    closeNav();
+    navToggle.focus();
+  }
+};
+
+const highlightActiveLink = () => {
+  if (!navLinks.length) return;
+  const path = window.location.pathname.replace(/\\/g, '/');
+  let current = 'home';
+  if (path.includes('about.html')) current = 'about';
+  else if (path.includes('projects.html')) current = 'projects';
+
+  navLinks.forEach(link => {
+    const isActive = link.dataset.nav === current;
+    link.classList.toggle('active', isActive);
+    if (isActive) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
+};
+
 navToggle?.addEventListener('click', toggleNav);
+navToggle?.addEventListener('keydown', handleNavToggleKey);
+
+navLinks.forEach(link => {
+  link.addEventListener('click', () => closeNav());
+});
 
 // Close menu when clicking outside on small screens
 document.addEventListener('click', event => {
   if (!nav || !navToggle) return;
   const isNavClick = nav.contains(event.target) || navToggle.contains(event.target);
   if (!isNavClick && nav.classList.contains('open')) {
-    toggleNav();
+    closeNav();
   }
 });
 
-renderProjects();
+// Allow Escape to close menu globally
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    closeNav();
+  }
+});
 
+highlightActiveLink();
+renderProjects();

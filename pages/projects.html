@@ -13,19 +13,16 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="../index.html">Your Name</a>
-      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-nav">
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
-      <nav class="site-nav" aria-label="Primary">
+      <nav class="site-nav" id="primary-nav" aria-label="Primary">
         <ul>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a class="active" href="projects.html">Projects</a></li>
-          <li><a href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a></li>
-          <li><a href="https://www.codecademy.com/profiles/yourusername" target="_blank" rel="noopener">Codecademy</a></li>
-          <li><a href="https://github.com/yourusername/portfolio-repo" target="_blank" rel="noopener">Repo</a></li>
+          <li><a data-nav="home" href="../index.html">Home</a></li>
+          <li><a data-nav="about" href="about.html">About</a></li>
+          <li><a data-nav="projects" href="projects.html">Projects</a></li>
         </ul>
       </nav>
     </div>
