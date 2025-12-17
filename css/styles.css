@@ -1,39 +1,40 @@
 :root {
-  --bg: #1a1f2e;
-  --surface: #121b2f;
-  --card: #182542;
-  --nav-bg: rgba(12, 17, 32, 0.8);
-  --footer-bg: rgba(9, 14, 26, 0.95);
-  --accent: #4f8bff;
-  --accent-2: #7cf3c9;
-  --text: #f0f0f0;
-  --text-strong: #ffffff;
-  --muted: #d0d0d0;
-  --border: rgba(255, 255, 255, 0.08);
-  --shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-  --radius: 16px;
-  --radius-sm: 10px;
-  --content-max: 1100px;
-  --transition: 180ms ease;
-  --grad-1: rgba(92, 109, 91, 0.15);
-  --grad-2: rgba(109, 183, 157, 0.12);
-}
-
-body.light-theme {
+  /* Light mode defaults */
   --bg: #f8f9fa;
   --surface: #ffffff;
   --card: #ffffff;
   --nav-bg: rgba(255, 255, 255, 0.9);
   --footer-bg: #f5f5f5;
-  --accent: #2f6bff;
-  --accent-2: #00b894;
-  --text: #2c3e50;
-  --text-strong: #2d3748;
-  --muted: #526170;
-  --border: rgba(0, 0, 0, 0.08);
-  --shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
-  --grad-1: rgba(47, 107, 255, 0.08);
-  --grad-2: rgba(0, 184, 148, 0.08);
+  --accent: #2563eb;
+  --accent-2: #60a5fa;
+  --text: #2d3748;
+  --text-strong: #1a1d2e;
+  --muted: #4a5568;
+  --border: #e2e8f0;
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --content-max: 1100px;
+  --transition: 180ms ease;
+  --grad-1: rgba(37, 99, 235, 0.08);
+  --grad-2: rgba(96, 165, 250, 0.08);
+}
+
+body.dark-mode {
+  --bg: #0f172a;
+  --surface: #1a1d2e;
+  --card: #1e293b;
+  --nav-bg: #1a1d2e;
+  --footer-bg: #0f172a;
+  --accent: #60a5fa;
+  --accent-2: #7cf3c9;
+  --text: #f1f5f9;
+  --text-strong: #ffffff;
+  --muted: #cbd5e1;
+  --border: rgba(255, 255, 255, 0.1);
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  --grad-1: rgba(92, 109, 91, 0.15);
+  --grad-2: rgba(109, 183, 157, 0.12);
 }
 
 *,
@@ -94,6 +95,7 @@ button {
   align-items: center;
   gap: 14px;
   min-height: 72px;
+  justify-content: space-between;
 }
 
 .header-actions {
@@ -132,7 +134,7 @@ button {
 .site-nav a:hover,
 .site-nav a.active {
   color: var(--text);
-  background: rgba(79, 139, 255, 0.18);
+  background: rgba(37, 99, 235, 0.12);
 }
 
 .site-nav a:focus-visible {
@@ -180,6 +182,14 @@ button {
   border-color: rgba(79, 139, 255, 0.5);
 }
 
+.theme-toggle.rotating {
+  animation: spin 0.45s ease;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 .theme-toggle .icon-sun,
 .theme-toggle .icon-moon {
   font-size: 18px;
@@ -189,14 +199,18 @@ button {
   transition: opacity var(--transition), transform var(--transition);
 }
 
-.theme-toggle.is-light .icon-sun {
+.theme-toggle.is-dark .icon-moon {
   opacity: 1;
   transform: scale(1);
 }
 
-.theme-toggle:not(.is-light) .icon-moon {
+.theme-toggle:not(.is-dark) .icon-sun {
   opacity: 1;
   transform: scale(1);
+}
+
+.theme-toggle.rotating {
+  animation: spin 0.45s ease;
 }
 
 .nav-toggle:focus-visible {
@@ -318,7 +332,12 @@ button {
 
 .btn.ghost {
   border-color: var(--border);
-  color: var(--text);
+  background: #f8f9fa;
+  color: #111827;
+}
+
+.btn.ghost:hover {
+  background: #e2e8f0;
 }
 
 .hero-media {
@@ -461,10 +480,19 @@ h1, h2, h3 {
 }
 
 .qual-card {
-  background: rgba(24, 37, 66, 0.85);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 14px 16px;
+}
+
+.qual-card h3 {
+  color: var(--text-strong);
+  font-weight: 700;
+}
+
+.qual-card p {
+  color: var(--muted);
 }
 
 .page-hero {
@@ -937,7 +965,7 @@ h1, h2, h3 {
   z-index: 2;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--border);
-  color: #fff;
+  color: var(--text);
   border-radius: 12px;
   width: 44px;
   height: 44px;
@@ -1079,6 +1107,11 @@ h1, h2, h3 {
   align-items: start;
 }
 
+.site-footer .brand,
+.site-footer h3 {
+  color: var(--text-strong);
+}
+
 .footer-col h3 {
   margin: 0 0 10px;
 }
@@ -1092,12 +1125,12 @@ h1, h2, h3 {
 }
 
 .footer-links a {
-  color: #d0d0d0;
-  font-weight: 400;
+  color: var(--text-strong);
+  font-weight: 500;
 }
 
 .footer-links a:hover {
-  color: #fff;
+  color: var(--accent);
 }
 
 .social-footer {
@@ -1132,6 +1165,11 @@ h1, h2, h3 {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.footer-bottom .muted,
+.site-footer p {
+  color: var(--muted);
 }
 
 @media (min-width: 880px) {

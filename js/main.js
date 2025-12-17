@@ -25,8 +25,8 @@ const projects = [
     gallery: [
       { src: '../images/Video.mp4', caption: 'Demo video clip' },
       { src: '../images/Photo 1 for logic gate.jpg', caption: 'Photo 1' },
-      { src: '../images/Photo 2 for logic gate.jpg', caption: 'Photo 2' },
-      { src: '../images/project-16x9-placeholder.svg', caption: 'Mobile responsive layout' }
+      { src: '../images/photo 2 for logic gate.jpg', caption: 'Photo 2' },
+      
     ],
     links: [
       { label: 'GitHub repo', url: 'https://github.com/yourusername/project-1' },
@@ -302,25 +302,21 @@ const closeLightbox = () => {
 };
 
 const applyTheme = theme => {
-  const isLight = theme === 'light';
-  document.body.classList.toggle('light-theme', isLight);
-  document.documentElement.classList.toggle('light-theme', isLight);
+  const isDark = theme === 'dark';
+  document.body.classList.toggle('dark-mode', isDark);
+  document.documentElement.classList.toggle('dark-mode', isDark);
   if (themeToggle) {
-    themeToggle.setAttribute('aria-pressed', String(isLight));
-    themeToggle.classList.toggle('is-light', isLight);
+    themeToggle.setAttribute('aria-pressed', String(isDark));
+    themeToggle.classList.toggle('is-dark', isDark);
+    themeToggle.classList.add('rotating');
+    setTimeout(() => themeToggle.classList.remove('rotating'), 220);
   }
 };
 
 const initTheme = () => {
   const saved = localStorage.getItem('theme');
-  const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-  const initial = saved || (prefersLight ? 'light' : 'dark');
+  const initial = saved || 'light';
   applyTheme(initial);
-
-  if (themeToggle) {
-    themeToggle.setAttribute('aria-pressed', String(initial === 'light'));
-    themeToggle.classList.toggle('is-light', initial === 'light');
-  }
 };
 
 const nextLightbox = () => {
@@ -462,8 +458,8 @@ lightboxClose?.addEventListener('click', closeLightbox);
 lightbox?.querySelector('.lightbox-backdrop')?.addEventListener('click', closeLightbox);
 
 themeToggle?.addEventListener('click', () => {
-  const isLight = document.body.classList.contains('light-theme');
-  const next = isLight ? 'dark' : 'light';
+  const isDark = document.body.classList.contains('dark-mode');
+  const next = isDark ? 'light' : 'dark';
   applyTheme(next);
   localStorage.setItem('theme', next);
 });
