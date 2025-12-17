@@ -1060,6 +1060,33 @@ h1, h2, h3 {
   transition: transform var(--transition), border var(--transition), background var(--transition);
 }
 
+/* ---------- Animations ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-24px);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(24px);
+}
+
+.reveal-dot {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.is-visible {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
 .lightbox-close {
   top: 14px;
   right: 14px;

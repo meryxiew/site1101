@@ -312,6 +312,30 @@ const initTheme = () => {
   applyTheme(initial);
 };
 
+// Intersection Observer for reveal animations
+const initReveals = () => {
+  const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-dot');
+  if (!revealElements.length) return;
+
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
+          const delay = entry.target.dataset.delay || 0;
+          entry.target.style.transitionDelay = `${delay}ms`;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.2
+    }
+  );
+
+  revealElements.forEach(el => observer.observe(el));
+};
+
 const nextLightbox = () => {
   if (!currentProject) return;
   currentGalleryIndex = (currentGalleryIndex + 1) % currentProject.gallery.length;
@@ -404,6 +428,7 @@ if (footerYear) {
 }
 
 initTheme();
+initReveals();
 
 filtersContainer?.addEventListener('click', event => {
   const target = event.target;
