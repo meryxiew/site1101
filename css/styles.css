@@ -797,6 +797,12 @@ h1, h2, h3 {
 .modal-backdrop {
   position: absolute;
   inset: 0;
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.modal.open .modal-backdrop {
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(4px);
 }
@@ -812,13 +818,13 @@ h1, h2, h3 {
   z-index: 1;
   max-height: 90vh;
   overflow-y: auto;
-  transform: translateY(10px);
+  transform: translateY(20px) scale(0.98);
   opacity: 0;
-  transition: transform 220ms ease, opacity 220ms ease;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modal.open .modal-dialog {
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
   opacity: 1;
 }
 
@@ -1060,31 +1066,78 @@ h1, h2, h3 {
   transition: transform var(--transition), border var(--transition), background var(--transition);
 }
 
-/* ---------- Animations ---------- */
-.reveal {
+/* ---------- Global Scroll Animations ---------- */
+/* Base animation classes - elements start hidden */
+.fade-up,
+[data-animate="fade-up"] {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.fade-in,
+[data-animate="fade-in"] {
+  opacity: 0;
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-left,
+[data-animate="fade-left"],
 .reveal-left {
   opacity: 0;
-  transform: translateX(-24px);
+  transform: translateX(-30px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.fade-right,
+[data-animate="fade-right"],
 .reveal-right {
   opacity: 0;
-  transform: translateX(24px);
+  transform: translateX(30px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scale-in,
+[data-animate="scale-in"] {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .reveal-dot {
   opacity: 0;
   transform: scale(0.6);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.is-visible {
+/* Stagger item - for grid layouts */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Active state - when element is visible (animates every time it enters viewport) */
+.animate,
+.fade-up.animate,
+.fade-in.animate,
+.fade-left.animate,
+.fade-right.animate,
+.scale-in.animate,
+.reveal.animate,
+.reveal-left.animate,
+.reveal-right.animate,
+.reveal-dot.animate,
+.stagger-item.animate,
+[data-animate].animate {
   opacity: 1;
-  transform: none;
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transform: translateY(0) translateX(0) scale(1);
 }
 
 .lightbox-close {

@@ -123,20 +123,27 @@ const renderFilters = () => {
   const fragment = document.createDocumentFragment();
 
   const allButton = document.createElement('button');
-  allButton.className = 'filter-btn active';
+  allButton.className = 'filter-btn active fade-in';
   allButton.dataset.filter = 'all';
+  allButton.setAttribute('data-delay', '0');
   allButton.textContent = 'All';
   fragment.appendChild(allButton);
 
-  categories.forEach(cat => {
+  categories.forEach((cat, index) => {
     const btn = document.createElement('button');
-    btn.className = 'filter-btn';
+    btn.className = 'filter-btn fade-in';
     btn.dataset.filter = cat;
+    btn.setAttribute('data-delay', ((index + 1) * 50).toString());
     btn.textContent = cat;
     fragment.appendChild(btn);
   });
 
   filtersContainer.appendChild(fragment);
+  
+  // Re-initialize reveals for filter buttons
+  setTimeout(() => {
+    initReveals();
+  }, 50);
 };
 
 const renderProjects = (filter = 'all') => {
@@ -149,10 +156,11 @@ const renderProjects = (filter = 'all') => {
     ? projects
     : projects.filter(p => p.category === filter);
 
-  filtered.forEach(project => {
+  filtered.forEach((project, index) => {
     const projectIndex = projects.indexOf(project);
     const card = document.createElement('article');
-    card.className = 'project-card';
+    card.className = 'project-card stagger-item';
+    card.setAttribute('data-delay', (index * 100).toString());
     card.innerHTML = `
       <div class="project-media">
         <img src="${project.image}" alt="${project.title} preview" loading="lazy">
@@ -183,6 +191,11 @@ const renderProjects = (filter = 'all') => {
   });
 
   grid.appendChild(fragment);
+  
+  // Re-initialize reveals for newly rendered project cards
+  setTimeout(() => {
+    initReveals();
+  }, 50);
 };
 
 const setActiveFilter = target => {
@@ -312,28 +325,108 @@ const initTheme = () => {
   applyTheme(initial);
 };
 
-// Intersection Observer for reveal animations
+// Global Scroll Animation System using Intersection Observer
+let animationObserver = null;
+
 const initReveals = () => {
-  const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-dot');
-  if (!revealElements.length) return;
+  // Create observer only once, reuse for all elements
+  if (!animationObserver) {
+    animationObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          const element = entry.target;
+          const delay = parseInt(element.dataset.delay) || 0;
+          
+          // Apply delay if specified (only set once, persist)
+          if (delay > 0 && !element.style.transitionDelay) {
+            element.style.transitionDelay = `${delay}ms`;
+          }
+          
+          // Add 'animate' class when entering viewport, remove when leaving
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.15) {
+            element.classList.add('animate');
+          } else {
+            element.classList.remove('animate');
+          }
+        });
+      },
+      {
+        threshold: [0.15, 0.2], // Trigger at 15-20% visibility
+        rootMargin: '0px 0px -50px 0px' // Start animation slightly before element enters viewport
+      }
+    );
+  }
 
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
-          const delay = entry.target.dataset.delay || 0;
-          entry.target.style.transitionDelay = `${delay}ms`;
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    {
-      threshold: 0.2
-    }
+  // Select all elements with animation classes or data-animate attribute
+  const animatedElements = document.querySelectorAll(
+    '.fade-up, .fade-in, .fade-left, .fade-right, .scale-in, ' +
+    '.reveal, .reveal-left, .reveal-right, .reveal-dot, .stagger-item, ' +
+    '[data-animate]'
   );
+  
+  if (!animatedElements.length) return;
 
-  revealElements.forEach(el => observer.observe(el));
+  // Observe all animated elements (keep observing, don't unobserve)
+  // Check if already observed to avoid duplicates
+  animatedElements.forEach(el => {
+    // Only observe if not already being observed
+    if (!el.dataset.observed) {
+      animationObserver.observe(el);
+      el.dataset.observed = 'true';
+    }
+  });
+  
+  // Handle stagger animations for grid items
+  initStaggerAnimations();
+};
+
+// Initialize stagger animations for grid layouts
+const initStaggerAnimations = () => {
+  // Project cards grid
+  const projectGrid = document.querySelector('.project-grid');
+  if (projectGrid) {
+    const projectCards = projectGrid.querySelectorAll('.project-card');
+    projectCards.forEach((card, index) => {
+      if (!card.classList.contains('stagger-item')) {
+        card.classList.add('stagger-item');
+        card.setAttribute('data-delay', (index * 100).toString());
+      }
+    });
+  }
+  
+  // Education cards grid
+  const eduGrid = document.querySelector('.edu-grid');
+  if (eduGrid) {
+    const eduCards = eduGrid.querySelectorAll('.edu-card');
+    eduCards.forEach((card, index) => {
+      if (!card.hasAttribute('data-delay')) {
+        card.setAttribute('data-delay', (index * 150).toString());
+      }
+    });
+  }
+  
+  // Qualification cards grid
+  const qualGrid = document.querySelector('.qual-grid');
+  if (qualGrid) {
+    const qualCards = qualGrid.querySelectorAll('.qual-card');
+    qualCards.forEach((card, index) => {
+      if (!card.hasAttribute('data-delay')) {
+        card.setAttribute('data-delay', (index * 100).toString());
+      }
+    });
+  }
+  
+  // Highlights cards grid (Home page)
+  const highlightsCards = document.querySelector('.highlights .cards');
+  if (highlightsCards) {
+    const cards = highlightsCards.querySelectorAll('.card');
+    cards.forEach((card, index) => {
+      if (!card.classList.contains('stagger-item')) {
+        card.classList.add('stagger-item');
+        card.setAttribute('data-delay', (index * 150).toString());
+      }
+    });
+  }
 };
 
 const nextLightbox = () => {
