@@ -5,9 +5,16 @@ const navLinks = document.querySelectorAll('.site-nav a[data-nav]');
 const projects = [
   {
     title: 'Project 1',
-    description: 'Flagship project description. Summarize the problem, your approach, and the measurable outcome.',
-    image: '../images/project-placeholder.svg',
+    description: 'Flagship case study. Summarize the challenge, your approach, and the measurable outcome in a concise narrative.',
+    image: '../images/project-16x9-placeholder.svg',
     tag: 'Featured',
+    category: 'Product',
+    badges: ['Design Systems', 'UX', 'Frontend'],
+    video: 'https://www.youtube.com/watch?v=ZP1d8sk3GFE',
+    gallery: [
+      '../images/project-16x9-placeholder.svg',
+      '../images/project-16x9-placeholder.svg'
+    ],
     links: [
       { label: 'View repo', url: 'https://github.com/yourusername/project-1' },
       { label: 'Live demo', url: '#' }
@@ -15,41 +22,105 @@ const projects = [
   },
   {
     title: 'Project 2',
-    description: 'Brief description of another project. Mention tools or stack used.',
-    image: '../images/project-placeholder.svg',
+    description: 'Secondary project with a focus on rapid prototyping, testing, and iteration.',
+    image: '../images/project-16x9-placeholder.svg',
     tag: 'Web',
+    category: 'Web',
+    badges: ['Prototype', 'Usability', 'API'],
+    video: 'https://www.youtube.com/watch?v=ZP1d8sk3GFE',
+    gallery: [
+      '../images/project-16x9-placeholder.svg'
+    ],
     links: [
-      { label: 'View repo', url: '#' }
+      { label: 'View repo', url: '#' },
+      { label: 'Live demo', url: '#' }
     ]
   },
   {
     title: 'Project 3',
-    description: 'Another highlight with outcomes or metrics. Keep it concise and clear.',
-    image: '../images/project-placeholder.svg',
+    description: 'A design system initiative to improve consistency and delivery speed.',
+    image: '../images/project-16x9-placeholder.svg',
     tag: 'Design System',
+    category: 'Systems',
+    badges: ['Tokens', 'Components', 'Docs'],
+    video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    gallery: [
+      '../images/project-16x9-placeholder.svg'
+    ],
     links: [
       { label: 'View repo', url: '#' }
     ]
   }
 ];
 
-const renderProjects = () => {
-  const grid = document.getElementById('projects-grid');
-  if (!grid) return;
+const filtersContainer = document.getElementById('filter-controls');
+const modal = document.getElementById('project-modal');
+const modalBackdrop = modal?.querySelector('.modal-backdrop');
+const modalClose = modal?.querySelector('.modal-close');
+const modalMedia = modal?.querySelector('#modal-media');
+const modalTag = modal?.querySelector('#modal-tag');
+const modalTitle = modal?.querySelector('#modal-title');
+const modalDescription = modal?.querySelector('#modal-description');
+const modalBadges = modal?.querySelector('#modal-badges');
+const modalGallery = modal?.querySelector('#modal-gallery');
+const modalVideo = modal?.querySelector('#modal-video');
+const modalLink = modal?.querySelector('#modal-link');
 
+const createBadgeMarkup = badges =>
+  badges.map(badge => `<span class="badge">${badge}</span>`).join('');
+
+const renderFilters = () => {
+  if (!filtersContainer) return;
+  const categories = Array.from(new Set(projects.map(p => p.category)));
   const fragment = document.createDocumentFragment();
 
-  projects.forEach(project => {
+  const allButton = document.createElement('button');
+  allButton.className = 'filter-btn active';
+  allButton.dataset.filter = 'all';
+  allButton.textContent = 'All';
+  fragment.appendChild(allButton);
+
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.filter = cat;
+    btn.textContent = cat;
+    fragment.appendChild(btn);
+  });
+
+  filtersContainer.appendChild(fragment);
+};
+
+const renderProjects = (filter = 'all') => {
+  const grid = document.getElementById('projects-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  const fragment = document.createDocumentFragment();
+  const filtered = filter === 'all'
+    ? projects
+    : projects.filter(p => p.category === filter);
+
+  filtered.forEach((project, index) => {
     const card = document.createElement('article');
     card.className = 'project-card';
     card.innerHTML = `
-      <img src="${project.image}" alt="${project.title} preview">
+      <div class="project-media">
+        <img src="${project.image}" alt="${project.title} preview" loading="lazy">
+      </div>
       <div class="project-body">
         <div class="pill">${project.tag}</div>
         <h3>${project.title}</h3>
         <p class="muted">${project.description}</p>
+        <div class="badge-row">
+          ${createBadgeMarkup(project.badges)}
+        </div>
         <div class="project-links">
-          ${project.links.map(link => `<a href="${link.url}" target="_blank" rel="noopener">${link.label}</a>`).join('')}
+          <button class="btn ghost details-btn" data-index="${index}">View Details</button>
+          ${project.video ? `<a class="btn primary" href="${project.video}" target="_blank" rel="noopener">Watch Demo</a>` : ''}
+        </div>
+        <div class="gallery-thumbs">
+          ${project.gallery.map(src => `<img src="${src}" alt="${project.title} gallery image" loading="lazy">`).join('')}
         </div>
       </div>
     `;
@@ -57,6 +128,41 @@ const renderProjects = () => {
   });
 
   grid.appendChild(fragment);
+};
+
+const setActiveFilter = target => {
+  if (!filtersContainer) return;
+  filtersContainer.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn === target);
+  });
+};
+
+const openModal = project => {
+  if (!modal) return;
+  modal.setAttribute('aria-hidden', 'false');
+  modal.classList.add('open');
+
+  modalTag.textContent = project.tag || '';
+  modalTitle.textContent = project.title;
+  modalDescription.textContent = project.description;
+  modalBadges.innerHTML = createBadgeMarkup(project.badges || []);
+  modalGallery.innerHTML = project.gallery
+    .map(src => `<img src="${src}" alt="${project.title} gallery image" loading="lazy">`)
+    .join('');
+  modalVideo.href = project.video || '#';
+  modalLink.href = project.links?.[0]?.url || '#';
+
+  modalMedia.innerHTML = `
+    <div class="project-media">
+      <img src="${project.image}" alt="${project.title} preview">
+    </div>
+  `;
+};
+
+const closeModal = () => {
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
 };
 
 const toggleNav = () => {
@@ -119,8 +225,32 @@ document.addEventListener('click', event => {
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape') {
     closeNav();
+    closeModal();
   }
 });
 
 highlightActiveLink();
+renderFilters();
 renderProjects();
+
+filtersContainer?.addEventListener('click', event => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) return;
+  if (!target.matches('.filter-btn')) return;
+  const filter = target.dataset.filter || 'all';
+  setActiveFilter(target);
+  renderProjects(filter);
+});
+
+document.getElementById('projects-grid')?.addEventListener('click', event => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) return;
+  if (target.classList.contains('details-btn')) {
+    const idx = Number(target.dataset.index);
+    const project = projects[idx];
+    if (project) openModal(project);
+  }
+});
+
+modalClose?.addEventListener('click', closeModal);
+modalBackdrop?.addEventListener('click', closeModal);
