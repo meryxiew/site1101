@@ -187,6 +187,12 @@ img {
   margin: 8px 0 12px;
 }
 
+.title {
+  margin: 0 0 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
 .hero-copy .lead {
   color: var(--muted);
   max-width: 60ch;
@@ -231,13 +237,14 @@ img {
 }
 
 .profile-photo {
-  width: 260px;
-  height: 260px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   border: 2px solid var(--border);
   background: var(--surface);
   box-shadow: var(--shadow);
   object-fit: cover;
+  max-width: 80vw;
 }
 
 .eyebrow {
@@ -435,5 +442,25 @@ h1, h2, h3 {
   .hero-grid {
     grid-template-columns: 1.1fr 0.9fr;
   }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animated-name {
+  animation: fade-up 520ms ease forwards;
+}
+
+.animated-title {
+  animation: fade-up 520ms ease forwards;
+  animation-delay: 120ms;
 }
 
