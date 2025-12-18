@@ -43,14 +43,15 @@ const projects = [
       'Shortened cycle time with design tokens',
       'De-risked features via prototype testing'
     ],
-    image: '../images/project-16x9-placeholder.svg',
+    image: '../images/First Photo for hour code .jpg',
     tag: 'Hour of Code',
     category: 'Hour of Code',
     badges: ['Prototype', 'Usability', 'API'],
-    video: 'https://www.youtube.com/watch?v=ZP1d8sk3GFE',
+    video: 'https://youtu.be/dd-zlNZ9X8g?feature=shared',
     gallery: [
-      { src: '../images/project-16x9-placeholder.svg', caption: 'Prototype screen' },
-      { src: '../images/project-16x9-placeholder.svg', caption: 'Interaction detail' }
+      { src: '../images/First Photo for hour code .jpg', caption: 'Main project image' },
+      { src: '../images/Hourofcode1.jpg', caption: 'Prototype screen' },
+      { src: '../images/Hourofcode2.jpg', caption: 'Interaction detail' }
     ],
     links: [
       { label: 'GitHub repo', url: '#' },
