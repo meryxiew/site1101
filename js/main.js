@@ -87,6 +87,32 @@ let currentGalleryIndex = 0;
 
 const isVideo = src => /\.mp4($|\?)/i.test(src);
 
+// Convert YouTube URL to embed format
+const convertYouTubeToEmbed = url => {
+  if (!url) return '';
+  
+  let videoId = '';
+  
+  // Handle youtube.com/watch?v=VIDEO_ID format
+  if (url.includes('youtube.com/watch?v=')) {
+    videoId = url.split('watch?v=')[1].split('&')[0].split('?')[0];
+  }
+  // Handle youtu.be/VIDEO_ID format
+  else if (url.includes('youtu.be/')) {
+    videoId = url.split('youtu.be/')[1].split('?')[0].split('&')[0];
+  }
+  // Handle youtube.com/embed/VIDEO_ID (already embed format)
+  else if (url.includes('youtube.com/embed/')) {
+    return url.split('?')[0]; // Return as-is, just remove query params
+  }
+  
+  if (videoId) {
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+  
+  return url; // Return original if we can't parse it
+};
+
 const createBadgeMarkup = badges =>
   badges.map(badge => `<span class="badge">${badge}</span>`).join('');
 
@@ -217,7 +243,7 @@ const openModal = project => {
     .join('');
 
   modalVideoEmbed.innerHTML = project.video
-    ? `<div class="video-embed"><iframe src="${project.video.replace('watch?v=', 'embed/')}" title="${project.title} demo video" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`
+    ? `<div class="video-embed"><iframe src="${convertYouTubeToEmbed(project.video)}" title="${project.title} demo video" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`
     : '';
 
   modalMedia.innerHTML = `
