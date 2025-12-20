@@ -488,13 +488,11 @@ const highlightActiveLink = () => {
 
 // Pictures Gallery
 const pictures = [
-  { src: '../images/Myphoto2.jpg', alt: 'Profile photo', caption: 'Profile photo' },
-  { src: '../images/logic gate.jpg', alt: 'Logic gate project', caption: 'Logic gate project' },
-  { src: '../images/Photo 1 for logic gate.jpg', alt: 'Logic gate photo 1', caption: 'Logic gate photo 1' },
-  { src: '../images/photo 2 for logic gate.jpg', alt: 'Logic gate photo 2', caption: 'Logic gate photo 2' },
-  { src: '../images/First Photo for hour code .jpg', alt: 'Hour of Code project', caption: 'Hour of Code project' },
-  { src: '../images/Hourofcode1.jpg', alt: 'Hour of Code photo 1', caption: 'Hour of Code photo 1' },
-  { src: '../images/Hourofcode2.jpg', alt: 'Hour of Code photo 2', caption: 'Hour of Code photo 2' }
+  { src: '../images/picture1.jpg',  },
+  { src: '../images/picture2.jpg', },
+  { src: '../images/picture3.jpg',  },
+  { src: '../images/picture4.jpg',  },
+ 
 ];
 
 let currentPictureIndex = 0;
