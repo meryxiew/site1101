@@ -476,6 +476,7 @@ const highlightActiveLink = () => {
   let current = 'home';
   if (path.includes('about.html')) current = 'about';
   else if (path.includes('projects.html')) current = 'projects';
+  else if (path.includes('pictures.html')) current = 'pictures';
 
   navLinks.forEach(link => {
     const isActive = link.dataset.nav === current;
@@ -483,6 +484,101 @@ const highlightActiveLink = () => {
     if (isActive) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   });
+};
+
+// Pictures Gallery
+const pictures = [
+  { src: '../images/Myphoto2.jpg', alt: 'Profile photo', caption: 'Profile photo' },
+  { src: '../images/logic gate.jpg', alt: 'Logic gate project', caption: 'Logic gate project' },
+  { src: '../images/Photo 1 for logic gate.jpg', alt: 'Logic gate photo 1', caption: 'Logic gate photo 1' },
+  { src: '../images/photo 2 for logic gate.jpg', alt: 'Logic gate photo 2', caption: 'Logic gate photo 2' },
+  { src: '../images/First Photo for hour code .jpg', alt: 'Hour of Code project', caption: 'Hour of Code project' },
+  { src: '../images/Hourofcode1.jpg', alt: 'Hour of Code photo 1', caption: 'Hour of Code photo 1' },
+  { src: '../images/Hourofcode2.jpg', alt: 'Hour of Code photo 2', caption: 'Hour of Code photo 2' }
+];
+
+let currentPictureIndex = 0;
+const picturesGrid = document.getElementById('pictures-grid');
+const picturesLightbox = document.getElementById('pictures-lightbox');
+const picturesLightboxImage = document.getElementById('pictures-lightbox-image');
+const picturesLightboxCaption = document.getElementById('pictures-lightbox-caption');
+const picturesLightboxClose = document.getElementById('pictures-lightbox-close');
+const picturesLightboxPrev = document.getElementById('pictures-lightbox-prev');
+const picturesLightboxNext = document.getElementById('pictures-lightbox-next');
+
+const renderPictures = () => {
+  if (!picturesGrid) return;
+  picturesGrid.innerHTML = '';
+
+  const fragment = document.createDocumentFragment();
+  pictures.forEach((picture, index) => {
+    const item = document.createElement('div');
+    item.className = 'picture-item stagger-item';
+    item.setAttribute('data-delay', (index * 50).toString());
+    item.setAttribute('role', 'listitem');
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('aria-label', `View ${picture.alt}`);
+    item.innerHTML = `
+      <img src="${picture.src}" alt="${picture.alt}" loading="lazy" data-index="${index}">
+    `;
+    item.addEventListener('click', () => openPicturesLightbox(index));
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openPicturesLightbox(index);
+      }
+    });
+    fragment.appendChild(item);
+  });
+
+  picturesGrid.appendChild(fragment);
+  
+  // Re-initialize reveals for newly rendered pictures
+  setTimeout(() => {
+    initReveals();
+  }, 50);
+};
+
+const openPicturesLightbox = (index) => {
+  if (!picturesLightbox || !pictures.length) return;
+  currentPictureIndex = index;
+  updatePicturesLightbox();
+  picturesLightbox.classList.add('open');
+  picturesLightbox.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('no-scroll');
+};
+
+const closePicturesLightbox = () => {
+  if (!picturesLightbox) return;
+  picturesLightbox.classList.remove('open');
+  picturesLightbox.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('no-scroll');
+};
+
+const updatePicturesLightbox = () => {
+  if (!picturesLightbox || !pictures.length) return;
+  const picture = pictures[currentPictureIndex];
+  if (!picture) return;
+  
+  if (picturesLightboxImage) {
+    picturesLightboxImage.src = picture.src;
+    picturesLightboxImage.alt = picture.alt;
+  }
+  if (picturesLightboxCaption) {
+    picturesLightboxCaption.textContent = picture.caption || '';
+  }
+};
+
+const nextPicture = () => {
+  if (!pictures.length) return;
+  currentPictureIndex = (currentPictureIndex + 1) % pictures.length;
+  updatePicturesLightbox();
+};
+
+const prevPicture = () => {
+  if (!pictures.length) return;
+  currentPictureIndex = (currentPictureIndex - 1 + pictures.length) % pictures.length;
+  updatePicturesLightbox();
 };
 
 navToggle?.addEventListener('click', toggleNav);
@@ -577,4 +673,26 @@ themeToggle?.addEventListener('click', () => {
   const next = isDark ? 'light' : 'dark';
   applyTheme(next);
   localStorage.setItem('theme', next);
+});
+
+// Pictures gallery initialization
+renderPictures();
+
+// Pictures lightbox event listeners
+picturesLightboxClose?.addEventListener('click', closePicturesLightbox);
+picturesLightboxPrev?.addEventListener('click', prevPicture);
+picturesLightboxNext?.addEventListener('click', nextPicture);
+picturesLightbox?.querySelector('.lightbox-backdrop')?.addEventListener('click', closePicturesLightbox);
+
+// Keyboard navigation for pictures lightbox
+document.addEventListener('keydown', event => {
+  if (picturesLightbox?.classList.contains('open')) {
+    if (event.key === 'Escape') {
+      closePicturesLightbox();
+    } else if (event.key === 'ArrowRight') {
+      nextPicture();
+    } else if (event.key === 'ArrowLeft') {
+      prevPicture();
+    }
+  }
 });

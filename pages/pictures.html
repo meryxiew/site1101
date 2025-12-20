@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio | Home</title>
+  <title>Portfolio | Pictures</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="index.html">Maryam Mehdiyeva</a>
+      <a class="brand" href="../index.html">Maryam Mehdiyeva</a>
       <nav class="site-nav" id="primary-nav" aria-label="Primary">
         <ul>
-          <li><a data-nav="home" href="index.html">Home</a></li>
-          <li><a data-nav="about" href="pages/about.html">About</a></li>
-          <li><a data-nav="projects" href="pages/projects.html">Projects</a></li>
-          <li><a data-nav="pictures" href="pages/pictures.html">Pictures</a></li>
+          <li><a data-nav="home" href="../index.html">Home</a></li>
+          <li><a data-nav="about" href="about.html">About</a></li>
+          <li><a data-nav="projects" href="projects.html">Projects</a></li>
+          <li><a data-nav="pictures" href="pictures.html">Pictures</a></li>
         </ul>
       </nav>
       <div class="header-actions">
@@ -36,45 +36,18 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow fade-up" data-delay="0">Hello, I'm</p>
-          <h1 class="animated-name fade-up" data-delay="100">Maryam Mehdiyeva</h1>
-          <p class="title animated-title fade-up" data-delay="200">Data engineering enthusiast</p>
-          <p class="lead fade-up" data-delay="300">
-            I was fascinated by the mechanics behind computer games and software development. That is why I started my information technology journey. I am highly motivated and determined student. I am skilled with solid foundation in computer engineering, coding and mathematics. I’m always working on bettering myself.
-          </p>
-          <div class="hero-cta fade-up" data-delay="400">
-            <a class="btn primary" href="pages/projects.html">View Projects</a>
-            <a class="btn ghost" href="pages/about.html">Learn More</a>
-          </div>
-        </div>
-        <div class="hero-media">
-          <img src="images/Myphoto2.jpg" alt="Profile placeholder" class="profile-photo scale-in" data-delay="200">
-        </div>
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow fade-up" data-delay="0">Gallery</p>
+        <h1 class="fade-up" data-delay="100">My Gallery</h1>
+        <p class="lead narrow fade-up" data-delay="200">A collection of moments and memories captured through photography.</p>
       </div>
     </section>
 
-    <section class="highlights">
+    <section class="pictures-section">
       <div class="container">
-        <div class="section-header fade-up" data-delay="0">
-          <p class="eyebrow">Snapshot</p>
-          <h2>What I do</h2>
-        </div>
-        <div class="cards">
-          <article class="card stagger-item" data-delay="0">
-            <h3>Background</h3>
-            <p>Share your professional background, areas of focus, and industries you serve.</p>
-          </article>
-          <article class="card stagger-item" data-delay="150">
-            <h3>Approach</h3>
-            <p>Explain how you solve problems, collaborate with teams, or drive impact.</p>
-          </article>
-          <article class="card stagger-item" data-delay="300">
-            <h3>Capabilities</h3>
-            <p>Mention top skills, tools, and technologies you use to deliver results.</p>
-          </article>
+        <div class="pictures-grid" id="pictures-grid" role="list">
+          <!-- Gallery images will be rendered via JavaScript -->
         </div>
       </div>
     </section>
@@ -119,7 +92,18 @@
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
+  <div class="lightbox" id="pictures-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image gallery">
+    <div class="lightbox-backdrop"></div>
+    <button class="lightbox-close" id="pictures-lightbox-close" aria-label="Close image viewer">&times;</button>
+    <button class="lightbox-nav" id="pictures-lightbox-prev" aria-label="Previous image">&#10094;</button>
+    <div class="lightbox-content">
+      <img id="pictures-lightbox-image" src="" alt="">
+      <p class="lightbox-caption" id="pictures-lightbox-caption"></p>
+    </div>
+    <button class="lightbox-nav" id="pictures-lightbox-next" aria-label="Next image">&#10095;</button>
+  </div>
+
+  <script src="../js/main.js"></script>
 </body>
 </html>
 
