@@ -34,19 +34,19 @@ const projects = [
   },
   {
     title: 'Project 2',
-    description: 'Secondary project with a focus on rapid prototyping, testing, and iteration.',
+    description: 'In this project, we participated in the global Hour of Code initiative to introduce school students to the fundamentals of programming through game development. The main objective was to make coding engaging, accessible, and interactive by using Microsoft MakeCode Arcade, a block-based programming platform designed for beginners. We visited a local school and worked directly with students, guiding them step by step as they created their own simple games. The activities focused on core programming concepts such as events, conditions, loops, sprites, and basic game logic. By learning through hands-on practice, students were able to understand how code translates into real-time actions within a game environment. Throughout the project, we emphasized creativity, problem-solving, and logical thinking, while also encouraging students to experiment and learn from mistakes in a supportive learning atmosphere.',
     longDescription: [
-      'Describe how you validated ideas through prototypes and short feedback loops.',
-      'Highlight how you collaborated with engineering to ship quickly and safely.'
+      
     ],
     takeaways: [
-      'Shortened cycle time with design tokens',
-      'De-risked features via prototype testing'
+      'Gained experience in teaching programming concepts to beginners',
+      'Improved communication and leadership skills while working with students',
+      'Learned how to use Microsoft MakeCode Arcade as an educational tool'
     ],
     image: '../images/First Photo for hour code .jpg',
     tag: 'Hour of Code',
     category: 'Hour of Code',
-    badges: ['Prototype', 'Usability', 'API'],
+    badges: ['Education', 'Programming', 'Game Development'],
     video: 'https://youtu.be/dd-zlNZ9X8g?feature=shared',
     gallery: [
       { src: '../images/First Photo for hour code .jpg', caption: 'Main project image' },
